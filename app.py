@@ -13,4 +13,5 @@ def home():
 def deploy():
     return "deployment successful GitHub ->Jenkins ->Test ->Docker Build ->Browser"
 
-app.run(host="0.0.0.0", port=5000)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
