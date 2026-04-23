@@ -2,6 +2,7 @@ pipeline {
     agent any
 
     stages {
+
         stage('Clone') {
             steps {
                 git 'https://github.com/computerproject713/cicd-demo.git'
@@ -10,13 +11,13 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh 'pip install -r requirements.txt'
+                bat 'python -m pip install -r requirements.txt'
             }
         }
 
         stage('Test') {
             steps {
-                sh 'pytest --junitxml=report.xml'
+                bat 'python -m pytest --junitxml=report.xml'
             }
         }
 
@@ -28,13 +29,17 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t cicd-demo .'
+                bat 'docker build -t cicd-demo .'
             }
         }
 
         stage('Run Container') {
             steps {
-                sh 'docker run -d -p 5000:5000 cicd-demo'
+                bat '''
+                docker stop cicd-demo || exit 0
+                docker rm cicd-demo || exit 0
+                docker run -d -p 5000:5000 --name cicd-demo cicd-demo
+                '''            
             }
         }
     }
