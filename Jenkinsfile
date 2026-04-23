@@ -36,10 +36,10 @@ pipeline {
         stage('Run Container') {
             steps {
                 bat '''
-                docker stop cicd-demo || exit 0
-                docker rm cicd-demo || exit 0
+                docker stop cicd-demo 2>nul
+                docker rm cicd-demo 2>nul
                 docker run -d -p 5000:5000 --name cicd-demo cicd-demo
-                '''            
+                '''           
             }
         }
     }
